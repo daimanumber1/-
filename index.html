@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			.box {
+				width: 500px;
+				height: 200px;
+				padding: 7px;
+				border: 1px solid #ccc;
+				margin: 50px auto;
+			}
+			.inner{
+				width: 500px;
+				height: 200px;
+				position: relative;
+				overflow: hidden;
+				
+			}
+			
+			#ul1 {
+				list-style: none;
+				width: 3000px;
+				position: absolute;
+				left: 8px;
+				
+			}
+			
+			#ul1 li {
+				
+				float: left;
+			}
+			
+			#ul2 {
+				position: absolute;
+				list-style: none;
+				right: 10px;
+				bottom: 10px;
+			}
+			
+			#ul2 li {
+				width: 20px;
+				height: 20px;
+				/*padding: 5px;*/
+				text-align: center;
+				border: 1px solid #CCCCCC;
+				float: left;
+				background: white;
+				margin-left: 10px;
+				font: 18px;
+				cursor: pointer;
+			}
+			
+			#ul2 .current {
+				background: #FF8C00;
+				color: white;
+			}
+			
+			img {
+				/*width: 3000px;*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+
+			<div class="inner">
+				<ul id="ul1">
+					<li><img src="img/1.jpg" /></li>
+					<li><img src="img/2.jpg" /></li>
+					<li><img src="img/3.jpg" /></li>
+					<li><img src="img/4.jpg" /></li>
+					<li><img src="img/5.jpg" /></li>
+				</ul>
+				<ul id="ul2">
+					<li class="current">1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ul>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var img = document.getElementsByTagName("img");
+			var ul1 = document.getElementById("ul1");
+			var ul2 = document.getElementById("ul2");
+			var liArr = ul2.children;
+			var timer;
+
+			function animate(ele, target) {
+				clearInterval(timer);
+				var speed = (target - ele.offsetLeft) > 0 ? 10 : (-10);
+				timer = window.setInterval(function() {
+					var val = target - ele.offsetLeft;
+					ele.style.left = ele.offsetLeft + speed + "px";
+					if(Math.abs(val) <= 10) {
+						ele.style.left = target + "px";
+						clearInterval(timer);
+					}
+				}, 15)
+
+			}
+
+			for(var i = 0; i < liArr.length; i++) {
+				//  点亮盒子
+				liArr[i].index = i;
+				liArr[i].onmouseover = function() {
+					for(var j = 0; j < liArr.length; j++) {
+						liArr[j].className = "";
+					}
+					this.className = "current";
+					//移动 图片
+					animate(ul1, -500 * this.index);
+
+				}
+
+			}
+			//				li[i].onmouseover =function(){
+			////					alert(2);
+			////					if(){
+			////						ul1.style.left =ul1.offsetLeft -510 +"px";
+			////					}
+			//					timer=window.setInterval(function(){
+			//						ul1.style.left =ul1.offsetLeft -510 +"px";
+			//					},4000)
+
+			//				}
+			//			}
+
+			//			window.setInterval(function(){
+			//				if(){
+			//					
+			//				}
+			//				ul1.style.left =ul1.offsetLeft-20+"px";
+			////				img[0].style.left=img[0].offsetLeft -10+"px";
+			//			},100)
+		</script>
+	</body>
+
+</html>
