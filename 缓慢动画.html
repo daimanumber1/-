@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			.box{
+				width: 100px;
+				height: 100px;
+				background: pink;
+				position: absolute;
+				left: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		<button id="butt">200</button>
+		<button id="butt2">400</button>
+		
+		<div class="box"  id="box1">
+			
+		</div>
+		<script type="text/javascript">
+			var butt=document.getElementById("butt");
+			var butt2=document.getElementById("butt2");
+			
+			var box =document.getElementById("box1");
+			butt.onclick= function(){
+				animate(box,200);
+			};
+			butt2.onclick= function(){
+				animate(box,400);
+			};
+//			var timer;
+			function animate(ele,target){
+				clearInterval(ele.timer);
+				ele.timer=window.setInterval(function(){
+					var val =target-ele.offsetLeft
+					//精髓   向上取整 向下取整  因为offsetleft 是四舍五入的
+					var speed = val>0 ? Math.ceil(val/10) : Math.floor(val/10) ;
+					ele.style.left= ele.offsetLeft+ speed +"px";
+					console.log(2);
+					if(Math.abs(val)<=Math.abs(speed)){
+						ele.style.left= target +"px";
+						clearInterval(ele.timer);
+					}
+				},30)
+				
+			}
+			
+		</script>
+		
+	</body>
+</html>
