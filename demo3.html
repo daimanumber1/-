@@ -1,0 +1,262 @@
+<!doctype html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无标题文档</title>
+	<style type="text/css">
+		body,
+		ul,
+		ol,
+		li,
+		img {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		
+		#box {
+			width: 490px;
+			height: 170px;
+			padding: 5px;
+			position: relative;
+			border: 1px solid #ccc;
+			margin: 100px auto 0;
+		}
+		
+		.ad {
+			width: 490px;
+			height: 170px;
+			overflow: hidden;
+			position: relative;
+		}
+		
+		#box img {
+			width: 490px;
+		}
+		
+		.ad ol {
+			position: absolute;
+			right: 10px;
+			bottom: 10px;
+		}
+		
+		.ad ol li {
+			width: 20px;
+			height: 20px;
+			line-height: 20px;
+			border: 1px solid #ccc;
+			text-align: center;
+			background: #fff;
+			float: left;
+			margin-right: 10px;
+			cursor: pointer;
+			_display: inline;
+		}
+		
+		.ad ol li.current {
+			background: yellow;
+		}
+		
+		.ad ul li {
+			float: left;
+		}
+		
+		.ad ul {
+			position: absolute;
+			top: 0;
+			width: 2940px;
+		}
+		
+		.ad ul li.current {
+			display: block;
+		}
+		
+		#arr {
+			display: none;
+		}
+		
+		#arr span {
+			width: 40px;
+			height: 40px;
+			position: absolute;
+			left: 5px;
+			top: 50%;
+			margin-top: -20px;
+			background: #000;
+			cursor: pointer;
+			line-height: 40px;
+			text-align: center;
+			font-weight: bold;
+			font-family: '黑体';
+			font-size: 30px;
+			color: #FFFFFF;
+			opacity: 0.3;
+			border: 1px solid #fff;
+		}
+		
+		#arr #right {
+			right: 5px;
+			left: auto;
+		}
+		
+		#ul2 {
+			position: absolute;
+			list-style: none;
+			right: 10px;
+			bottom: 10px;
+		}
+		
+		#ul2 li {
+			width: 20px;
+			height: 20px;
+			text-align: center;
+			border: 1px solid #CCCCCC;
+			float: left;
+			background: white;
+			margin-left: 10px;
+			font: 18px;
+			cursor: pointer;
+		}
+		
+		#ul2 .current {
+			background: #FF8C00;
+			color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box" class="all">
+		<div class="ad">
+			<ul id="imgs">
+				<li><img src="imgs/1.jpg" /></li>
+				<li><img src="imgs/2.jpg" /></li>
+				<li><img src="imgs/3.jpg" /></li>
+				<li><img src="imgs/4.jpg" /></li>
+				<li><img src="imgs/5.jpg" /></li>
+			</ul>
+
+			<ol></ol>
+			<div id="arr">
+				<span id="left"><</span>
+				<span id="right">></span>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var box = document.getElementsByClassName("all")[0];
+		var ul = box.children[0].children[0];
+		var ol = box.children[0].children[1];
+		var ulLiArr = ul.children;
+
+		var newLi = ulLiArr[0].cloneNode(true);
+		ul.appendChild(newLi);
+
+		for(var i = 0; i < ulLiArr.length - 1; i++) {
+			var newOlLi = document.createElement("li");
+			newOlLi.innerHTML = i + 1;
+			ol.appendChild(newOlLi);
+		}
+
+		var olLiArr = ol.children;
+		olLiArr[0].className = "current";
+
+		//定义计时器
+		var timer;
+
+		function animate(ele, target) {
+			clearInterval(ele.timer);
+			ele.timer = window.setInterval(function() {
+				var val = target - ele.offsetLeft;
+				var speed = val > 0 ? 10 : -10;
+				ele.style.left = ele.offsetLeft + speed + "px";
+				if(Math.abs(val) <= 10) {
+					ele.style.left = target + "px";
+					clearInterval(ele.timer);
+				}
+			}, 5)
+		}
+
+		//鼠标放到小方块上滑动图片
+		for(var i = 0; i < olLiArr.length; i++) {
+			olLiArr[i].index = i;
+			olLiArr[i].onmouseover = function() {
+				for(var i = 0; i < olLiArr.length; i++) {
+					olLiArr[i].className = "";
+				}
+				this.className = "current";
+				keys = this.index; //跟下面同步  
+				square = this.index;
+				animate(ul, -490 * this.index);
+			}
+		}
+
+		timer = window.setInterval(autoPlay, 1000);
+
+		//本案例的精髓
+		// 让第5张跟第一张无缝结合
+		var keys = 0;
+		var square = 0;
+
+		function autoPlay() {
+			//上面6张图片			
+			keys++;
+			if(keys == olLiArr.length + 1) {
+				ul.style.left = 0 + "px";
+				keys = 1;
+			}
+			console.log(keys);
+			animate(ul, -keys * 490);
+
+			//下面的5个小方块
+			square++;
+			for(var i = 0; i < olLiArr.length; i++) {
+				olLiArr[i].className = "";
+			}
+
+			if(square == olLiArr.length) {
+				square = 0;
+			}
+			olLiArr[square].className = "current";
+
+		}
+		//鼠标放上去清除定时器
+		box.onmouseover = function() {
+			clearInterval(timer);
+			leftRight.style.display = "block";
+		}
+		box.onmouseout = function() {
+			timer = window.setInterval(autoPlay, 1000);
+			leftRight.style.display = "none";
+		}
+
+		//左右小方块
+		var leftRight = box.children[0].children[2];
+
+		leftRight.children[0].onclick = function() {
+			keys--;
+			if(keys <0) {
+				ul.style.left = -(olLiArr.length)*490 + "px";
+				keys = olLiArr.length-1;
+			}
+			console.log(keys);
+			animate(ul, -keys * 490);
+			//下面的5个小方块
+			square--;
+			for(var i = 0; i < olLiArr.length; i++) {
+				olLiArr[i].className = "";
+			}
+			if(square <0) {
+				square = olLiArr.length-1;
+			}
+			olLiArr[square].className = "current";
+		}
+		leftRight.children[1].onclick = function() {
+			autoPlay();
+		}
+	</script>
+
+</body>
+
+</html>
