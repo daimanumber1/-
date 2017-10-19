@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			body {
+				background: rgba(0,0,0,0.7);
+			}
+			
+			.box {
+				width: 800px;
+				height: 42px;
+				background: #FFFFFF  url(../img/wifi.png) right no-repeat ;
+				margin: 200px auto;
+				border-radius: 8px;
+				position: relative;
+			}
+			.box ul{
+				list-style: none;
+				position: relative;
+				
+			}
+			.box ul li {
+				width: 83px;
+				float: left;
+				/*padding: 4px;*/
+				line-height: 42px;
+				text-align: center;
+				cursor: pointer;
+				
+			}
+			
+			span{
+				width: 83px;
+				height: 42px;
+				position: absolute;
+				background: url(../img/cloud.gif);
+				left: 0;
+				top: 0;
+				
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			<span></span>
+			<ul>
+				<li>首页新闻</li>
+				<li>活动策划</li>
+				<li>师资力量</li>
+				<li>企业文化</li>
+				<li>招聘信息</li>
+				<li>公司简介</li>
+				<li>上海校区</li>
+				<li>广州校区</li>
+			</ul>
+			
+		</div>
+	<script type="text/javascript">
+		var box = document.getElementsByClassName("box")[0];
+		var liArr = box.children[1].children;
+		var span = document.getElementsByTagName("span")[0];
+		
+		
+		
+		
+		var count = 0 ;
+		
+		for(var i=0; i<liArr.length; i++) {
+			liArr[i].index = i;
+			//鼠标 进入事件
+			liArr[i].onmouseover =function() {
+					animate(span,this.index*83);
+				
+			}
+			liArr[i].onmouseout =function() {
+					animate(span, count*83);
+			}
+			//鼠标点击事件
+			liArr[i].onclick =function() {
+				count = this.index ;
+				animate(span,count*83);
+			}
+			
+		}
+		
+		
+		function animate(ele,target) {
+			clearInterval(ele.timer);
+			ele.timer =window.setInterval(function() {
+				var val = target - ele.offsetLeft;
+				var speed = val > 0 ? Math.ceil(val/10) : Math.floor(val/10);
+				ele.style.left = ele.offsetLeft + speed +"px" ;
+				if(Math.abs(val)<=Math.abs(speed)) {
+					ele.style.left = target +"px" ;
+					clearInterval(ele.timer);
+					
+				}
+				
+			},15)
+		}
+		
+		
+		
+	</script>
+	</body>
+
+</html>
