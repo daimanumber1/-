@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			body {
+				background: #20B2AA;
+				overflow: hidden;
+			}
+			.box {
+				width: 2000px;
+				height: 211px;
+				background: url(img/1.png);
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				opacity: 0.4;
+				animation: flo 2s infinite alternate;
+			}
+			.box2 {
+				width: 2000px;
+				height: 235px;
+				background: url(img/2.png);
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				opacity: 0.4;
+				animation: flo 1s infinite alternate;
+			}
+			@keyframes flo{
+				0%{
+					transform: translateY(60px);
+				}
+				100%{
+					transform: translateY(0px);
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="box">
+			
+		</div>
+		<div class="box2">
+			
+		</div>
+	</body>
+
+</html>
